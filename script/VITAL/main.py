@@ -19,6 +19,8 @@ if __name__ == "__main__":
     parser.add_argument("--alpha_init", type=float, default=None, metavar="FLOAT")
 
     args = parser.parse_args()
+    if args.open_vocab:
+        args.suffix = "_open" # results store in results/subfolder = "dataset_name"+"_"+"attr_suffix"+"_"+"suffix"
     run(args)
     # disable all plotting
     import os, importlib

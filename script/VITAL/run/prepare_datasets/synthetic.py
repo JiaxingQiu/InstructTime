@@ -1,36 +1,56 @@
 # ------------------------------------------------------------------------------------------------
 # prepare dataset and arguments for training
 # ------------------------------------------------------------------------------------------------
-from sklearn.model_selection import train_test_split
+# from sklearn.model_selection import train_test_split
 
-df = pd.read_csv('../../data/synthetic/data.csv.zip', compression='zip')
-df.columns = df.columns.astype(str)
-df['text'] = df['ts_description']
-df['text'] = df['text'].str.strip()
-df = df.reset_index(drop=True)
-if 'text_pairs' in config_dict['text_config'] : # use mixture of attributes instead of single attributes 
-    if config_dict['text_config']['gt']:
-        # mixture with ground truth
-        df_train, df_test, df_left = gt_train_test_left(df, config_dict)
+# df = pd.read_csv('../../data_raw/synthetic/data.csv.zip', compression='zip')
+# df.columns = df.columns.astype(str)
+# df['text'] = df['ts_description']
+# df['text'] = df['text'].str.strip()
+# df = df.reset_index(drop=True)
+# if 'text_pairs' in config_dict['text_config'] : # use mixture of attributes instead of single attributes 
+#     if config_dict['text_config']['gt']:
+#         # mixture with ground truth
+#         df_train, df_test, df_left = gt_train_test_left(df, config_dict)
         
-    else:
-        df = mix_w_counter(df, config_dict, n = config_dict['text_config']['n'], plot=False)
-        df = df.reset_index(drop=True)
-        df = add_y_col(df, config_dict)
-        # print(df.text.value_counts())
+#     else:
+#         df = mix_w_counter(df, config_dict, n = config_dict['text_config']['n'], plot=False)
+#         df = df.reset_index(drop=True)
+#         df = add_y_col(df, config_dict)
+#         # print(df.text.value_counts())
 
-        # downsample negative levels first
-        if config_dict['downsample']:
-            df = downsample_neg_levels(df, config_dict, config_dict['random_state'])
+#         # downsample negative levels first
+#         if config_dict['downsample']:
+#             df = downsample_neg_levels(df, config_dict, config_dict['random_state'])
 
-        # then split: 70% train, 20% test, 10% left
-        df_train, df_temp = train_test_split(df, test_size=0.3, stratify=df[config_dict['y_col']], random_state=config_dict['random_state'])
-        df_test, df_left = train_test_split(df_temp, test_size=1/3, stratify=df_temp[config_dict['y_col']], random_state=config_dict['random_state'])
-        print("train, test, left: ", len(df_train), len(df_test), len(df_left))
+#         # then split: 70% train, 20% test, 10% left
+#         df_train, df_temp = train_test_split(df, test_size=0.3, stratify=df[config_dict['y_col']], random_state=config_dict['random_state'])
+#         df_test, df_left = train_test_split(df_temp, test_size=1/3, stratify=df_temp[config_dict['y_col']], random_state=config_dict['random_state'])
+#         print("train, test, left: ", len(df_train), len(df_test), len(df_left))
 
-df_train['label'] = df_train.index.to_series()
-df_test['label'] = df_test.index.to_series()
-df_left['label'] = df_left.index.to_series()
+# df_train['label'] = df_train.index.to_series()
+# df_test['label'] = df_test.index.to_series()
+# df_left['label'] = df_left.index.to_series()
+
+# # Save the dataframes as compressed CSV files
+# if dataset_name == 'syn_gt':
+#     df_train.to_csv('../../data/synthetic/train_gt.csv.zip', compression='zip', index=False)
+#     df_test.to_csv('../../data/synthetic/test_gt.csv.zip', compression='zip', index=False)
+#     df_left.to_csv('../../data/synthetic/left_gt.csv.zip', compression='zip', index=False)
+# else:
+#     df_train.to_csv('../../data/synthetic/train.csv.zip', compression='zip', index=False)
+#     df_test.to_csv('../../data/synthetic/test.csv.zip', compression='zip', index=False)
+#     df_left.to_csv('../../data/synthetic/left.csv.zip', compression='zip', index=False)
+
+# read 
+if dataset_name == 'syn_gt':
+    df_train = pd.read_csv('../../data/synthetic/train_gt.csv.zip', compression='zip')
+    df_test = pd.read_csv('../../data/synthetic/test_gt.csv.zip', compression='zip')
+    df_left = pd.read_csv('../../data/synthetic/left_gt.csv.zip', compression='zip')
+else:
+    df_train = pd.read_csv('../../data/synthetic/train.csv.zip', compression='zip')
+    df_test = pd.read_csv('../../data/synthetic/test.csv.zip', compression='zip')
+    df_left = pd.read_csv('../../data/synthetic/left.csv.zip', compression='zip')
 
 if config_dict['open_vocab']:
     df_train, df_test, df_left = gen_open_vocab_text(df_train, df_test, df_left, config_dict)
@@ -39,9 +59,6 @@ print('\n\nfinal distribution of text prediction')
 print(df_train['text'].value_counts())
 print(df_test['text'].value_counts())
 print(df_left['text'].value_counts())
-
-
-
 
 
 # ------------------------------------------------------------------------------------------------

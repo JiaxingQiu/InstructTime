@@ -5,8 +5,10 @@ __pycache__/
 .vscode/
 
 data/
+data_raw/
 inst/
 !script/Data/
 script/tedit_lite/tedit_save/
 script/tedit_lite_tx/tedit_save/
 script/VITAL/results/
+venv_*

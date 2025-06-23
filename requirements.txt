@@ -23,8 +23,8 @@ statsmodels==0.14.4
 h5py==3.13.0
 
 
-# R integration
-rpy2==3.5.17
+# # R integration
+# rpy2==3.5.17
 
 # Web
 aiohttp==3.11.13
