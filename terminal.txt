@@ -1,0 +1,32 @@
+# 1. Navigate to your git directory
+
+# 2. Create a virtual environment
+python -m venv inst
+
+# 3. Activate the virtual environment
+source inst/bin/activate
+
+# 4. Install from requirements.txt
+pip install -r requirements.txt
+
+# 5. Add the environment to Jupyter
+pip install jupyter notebook ipykernel
+
+# 6. Remove existing kernel
+jupyter kernelspec uninstall inst
+
+# 7. Install kernel again
+python -m ipykernel install --user --name=inst --display-name="INST"
+
+# 8. Verify installation location
+jupyter kernelspec list
+which jupyter 
+
+# in case to reinstall
+# deactivate
+# jupyter kernelspec uninstall inst
+# rm -rf inst
+
+# 9. Execute scripts from terminal or ipynb
+cd ./script/VITAL
+python main.py --dataset_name air --attr_suffix _at

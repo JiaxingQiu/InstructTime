@@ -1,0 +1,14 @@
+# navigate to VITAL folder as working dir
+
+# text-based (add --open_vocab for open vocabulary, remove --overwrite for unfinished evaluation)
+python main.py --overwrite --dataset_name air
+python main.py --overwrite --dataset_name syn_gt
+python main.py --overwrite --dataset_name syn
+python main.py --overwrite --dataset_name nicu
+
+# attribute-based
+python main.py --overwrite --dataset_name air --attr_suffix _at
+python main.py --overwrite --dataset_name syn_gt --attr_suffix _at
+python main.py --overwrite --dataset_name syn --attr_suffix _at
+python main.py --overwrite --dataset_name nicu --attr_suffix _at --alpha_init 1e-2
+

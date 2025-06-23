@@ -1,0 +1,56 @@
+model:
+    device: cuda:0
+
+    diffusion:
+      type: CSDI_MultiPatch_Weaver_Parallel
+      layers: 3
+      channels: 64
+      nheads: 8
+      diffusion_embedding_dim: 128
+      is_linear: False  # linear transformer
+
+      # multi-patch
+      L_patch_len: 2
+      multipatch_num: 3
+      attention_mask_type: parallel
+      n_var: 1
+
+      beta_start: 0.0001
+      beta_end: 0.5
+      schedule: "quad"
+
+      num_steps: 50
+
+      # edit
+      edit_steps: 50  # the number of steps to perform editing
+      bootstrap_ratio: 0.5   # [0,1]
+
+      is_attr_proj: False
+
+      attr_proj_type: avg
+      ##### attr projector: deprecated
+      attr_heads: 8
+      attr_layers: 2
+      n_attrs: 2
+
+    side:
+      num_var: 1
+      var_emb: 16
+      time_emb: 128
+
+    attrs:
+      attr_emb: 64
+
+
+train:
+    # Training hyperparameters
+    epochs: 2000
+    batch_size: 256
+    lr: 1.0e-3
+    itr_per_epoch: 1.0e+8 
+    val_epoch_interval: 10
+    display_interval: 10
+    # Paths
+    model_path: "" # or path to checkpoint if resuming
+    output_folder: tedit_save/te
+    

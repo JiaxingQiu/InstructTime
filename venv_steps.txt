@@ -1,0 +1,41 @@
+# ---- HPC -----
+# 1. first time
+cd /scratch/jq2uw/instruct_time
+
+module purge  
+module load miniforge
+cat ~/.Renviron
+
+conda create --prefix ./inst python=3.12 rpy2
+conda activate ./inst
+conda install ipykernel jupyter jupyterlab
+pip install -r requirements.txt
+
+export R_HOME=$(R RHOME)
+export R_LIBS_USER=~/R/goolf/4.3
+export LD_LIBRARY_PATH=$R_HOME/lib:$LD_LIBRARY_PATH
+
+python -m ipykernel install --user --name=inst --display-name "INST"
+
+# final inspect
+jupyter kernelspec list
+python -c "import rpy2; print('rpy2 version:', rpy2.__version__)"
+R --version
+
+# 2. in settings.py script 
+echo $R_HOME # find the r path
+
+
+# 3. future sessions
+cd /scratch/jq2uw/instruct_time
+conda activate ./instime
+pip install package_name
+
+
+
+3. To execute main.py in Rivanna 
+conda install -n clip_env -c conda-forge "libstdcxx-ng>=13" "libgcc-ng>=13"
+export LD_PRELOAD=$CONDA_PREFIX/lib/libstdc++.so.6
+cd ./script/VITAL
+python main.py --dataset_name air --attr_suffix _at
+
