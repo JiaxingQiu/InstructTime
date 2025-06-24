@@ -174,7 +174,7 @@ def plot_embeddings_graph(adj_mat, k = 2, title = '', subtitle = ''):
     import numpy as np
     
     # zero out lower than 50 percentile
-    adj_mat[adj_mat < np.percentile(adj_mat, 25)] = 0
+    # adj_mat[adj_mat < np.percentile(adj_mat, 25)] = 0
     np.fill_diagonal(adj_mat, 0)  # Remove self-loops
 
     # Create and draw network
@@ -258,12 +258,12 @@ def net_emb(df,
 
 
     adj_mat = pairwise_distances['l2'].detach().cpu().numpy()
-    adj_mat = 1/(adj_mat+1e-8)
-    plot_embeddings_graph(adj_mat, k=len(text_levels), title = y_col, subtitle = '1 / l2')
+    # adj_mat = 1/(adj_mat+1e-8)
+    # plot_embeddings_graph(adj_mat, k=len(text_levels), title = y_col, subtitle = '1 / l2')
 
 
     adj_mat = pairwise_distances['simi'].detach().cpu().numpy()
-    plot_embeddings_graph(adj_mat, k=len(text_levels), title = y_col, subtitle = 'similarity')
+    plot_embeddings_graph(adj_mat, k=len(text_levels), title = y_col, subtitle = 'Cosine Similarity Network')
 
     return pairwise_distances, ts2tx_distances
 

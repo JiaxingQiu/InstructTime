@@ -52,6 +52,8 @@ Use optional flags to control the behavior:
 - `--attr_suffix _at` to enable attribute-based editing
 
 ```bash
+cd ./script/VITAL
+
 # evaluate model from checkpoint
 python main.py --dataset_name air # air quality
 python main.py --dataset_name syn_gt # synthetic with ground truth

@@ -1,27 +1,24 @@
 
-
-# 1) Start in your project root
-cd /scratch/jq2uw/InstructTime
-
-# 2) Delete existing Conda environment (if it exists)
+# 1) Delete existing Conda environment (if it exists)
 conda deactivate 2>/dev/null
 conda env remove -n instime -y
 
-# 3) Delete existing Jupyter kernel (if it exists)
+# 2) Delete existing Jupyter kernel (if it exists)
 jupyter kernelspec uninstall -f instime
 
-# 4) Create the environment from scratch
+# 3) Create the environment from scratch
 conda create -y -n instime python=3.12
 
-# 5) Activate it
+# 4) Activate it
 conda activate instime
 
-# 6) Install dependencies
+# 5) Install dependencies
 pip install -r requirements.txt
 
-# 7) Install Jupyter kernel (to user dir)
+# 6) Install Jupyter kernel (to user dir)
 conda install jupyterlab ipykernel notebook -y
 python -m ipykernel install --user --name instime --display-name "INSTIME"
+jupyter kernelspec list
 
 # This command forces the installation path to the right default path. The issue with the above command not working on Rivanna is due to the wrong setting of VARIABLE - XDG_DATA_HOME, should be: $HOME/.local/share
 # To set this variable correctly we need to edit the .bashrc script using
