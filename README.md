@@ -57,6 +57,19 @@ python main.py --dataset_name air # air quality
 python main.py --dataset_name syn_gt # synthetic with ground truth
 python main.py --dataset_name syn # synthetic
 python main.py --dataset_name nicu # NICU heart rate
+
+# train model from scratch
+python main.py --dataset_name air --overwrite
+python main.py --dataset_name syn_gt --overwrite
+python main.py --dataset_name syn --overwrite
+python main.py --dataset_name nicu --overwrite
+
+# train attribute-based version
+python main.py --dataset_name air --overwrite --attr_suffix _at
+python main.py --dataset_name syn_gt --overwrite --attr_suffix _at
+python main.py --dataset_name syn --overwrite --attr_suffix _at
+python main.py --dataset_name nicu --overwrite --attr_suffix _at _alpha_init 1e-2
+
 ```
 
 
