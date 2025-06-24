@@ -7,6 +7,4 @@ __pycache__/
 data/
 data_raw/
 !script/Data/
-script/tedit_lite/tedit_save/
-script/tedit_lite_tx/tedit_save/
 script/VITAL/results/
