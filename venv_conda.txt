@@ -1,0 +1,53 @@
+
+
+# 1) Start in your project root
+cd /scratch/jq2uw/InstructTime
+
+# 2) Delete existing Conda environment (if it exists)
+conda deactivate 2>/dev/null
+conda env remove -n instime -y
+
+# 3) Delete existing Jupyter kernel (if it exists)
+jupyter kernelspec uninstall -f instime
+
+# 4) Create the environment from scratch
+conda create -y -n instime python=3.12
+
+# 5) Activate it
+conda activate instime
+
+# 6) Install dependencies
+pip install -r requirements.txt
+
+# 7) Install Jupyter kernel (to user dir)
+conda install jupyterlab ipykernel notebook -y
+python -m ipykernel install --user --name instime --display-name "INSTIME"
+
+# This command forces the installation path to the right default path. The issue with the above command not working on Rivanna is due to the wrong setting of VARIABLE - XDG_DATA_HOME, should be: $HOME/.local/share
+# To set this variable correctly we need to edit the .bashrc script using
+vi ~/.bashrc
+Press i to enter edit mode, add one line: export XDG_DATA_HOME=$HOME/.local/share
+Press esc to exit edit mode, exit the vim by entering :wq, press enter, then in the terminal source the bashrc script using:
+- source ~/.bashrc
+The above command should then work without any issues
+
+Alternative way to force the path:
+python -m ipykernel install \
+  --prefix=/home/jq2uw/.local \
+  --name=instime \
+  --display-name="INSTIME"
+
+# 8) Ready to go
+cd ./script/VITAL
+
+
+
+How to export your current Conda environment (already activated) to a yml script? 
+conda env export > instime_env_full.yml
+
+How to install a conda environment using the script? 
+conda env create -f instime_env.yml --name new_env_name
+
+
+
+
