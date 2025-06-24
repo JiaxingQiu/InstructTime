@@ -1,4 +1,4 @@
-# Instruction-based Time Series Editing
+# Project
 
 A short description of your project and what it does.
 
@@ -40,13 +40,13 @@ Download data.zip from [Hugging Face](https://huggingface.co/datasets/JiaxingJoy
 from huggingface_hub import hf_hub_download
 path = hf_hub_download(repo_id="JiaxingJoy/InstructTime", filename="data.zip", repo_type="dataset")
 ```
-Download results.zip from [Hugging Face](https://huggingface.co/datasets/JiaxingJoy/InstructTime/tree/main).
+Download results.zip from [Hugging Face](https://huggingface.co/datasets/JiaxingJoy/InstructTime/tree/main) to InstructTime/script/VITAL/ for InstructTime model checkpoints. 
 
 
 ## Usage
 
 Run the following command for each dataset.  
-Use optional flags to control the behavior:
+Use optional flags to control modeling type:
 - `--open_vocab` for open-vocabulary editing
 - `--overwrite` to retrain the model
 - `--attr_suffix _at` to enable attribute-based editing
