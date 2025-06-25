@@ -44,8 +44,7 @@ if __name__ == "__main__":
     for script in ["settings.py", "data.py", "model.py", "train_2steps.py"]:
         exec((RUN / script).read_text(), globals())
     # Evaluation
-    import numpy as np
-    for w in np.arange(0.0, 1.1, 0.1):
+    for w in [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]:
         globals()["w"] = w                         
         exec((RUN / "eval.py").read_text(),     globals())
         exec((RUN / "eng_eval.py").read_text(), globals())

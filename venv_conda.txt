@@ -48,3 +48,10 @@ conda env create -f instime_env.yml --name new_env_name
 
 
 
+
+conda activate instime
+cd /scratch/jq2uw/InstructTime/script/VITAL
+python main.py --dataset_name nicu
+python main.py --dataset_name nicu --attr_suffix _at
+python main.py --dataset_name nicu --open_vocab
+ 
