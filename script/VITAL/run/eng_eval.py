@@ -30,15 +30,16 @@ if 'df_pw_dists_all' in locals():
 # df_dists_margi = df_dists
 # print('-'*80)
 # Define the base augmentation pairs
-df_dists_raw = df_dists_ls[1]
-df_dists = pd.DataFrame()
-for metric in ['dtw', 'lcss']: # 'mse', 'mae',, 'lcss' 
-    df = eng_dists_multiple(df_dists_raw, base_aug_dict, metric = metric, aug_type='conditional')
-    df_dists = pd.concat([df_dists, df], ignore_index=True)
-df_dists_condi = df_dists
-print('-'*80)
-# df_dists_all = pd.concat([df_dists_margi, df_dists_condi], ignore_index=True)
-df_dists_all = df_dists_condi
+if 'df_dists_ls' in locals():
+    df_dists_raw = df_dists_ls[1]
+    df_dists = pd.DataFrame()
+    for metric in ['dtw', 'lcss']: # 'mse', 'mae',, 'lcss' 
+        df = eng_dists_multiple(df_dists_raw, base_aug_dict, metric = metric, aug_type='conditional')
+        df_dists = pd.concat([df_dists, df], ignore_index=True)
+    df_dists_condi = df_dists
+    print('-'*80)
+    # df_dists_all = pd.concat([df_dists_margi, df_dists_condi], ignore_index=True)
+    df_dists_all = df_dists_condi
 
 
 # # ---------------------------------- Math properties ----------------------------------
