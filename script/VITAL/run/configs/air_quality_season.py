@@ -5,8 +5,8 @@ config_dict = update_config(config_dict,
     # Eval settings (clip)
     # ts2txt
     y_col = 'season_str',
-    y_levels = ['The season is spring.', 'The season is summer.', 'The season is fall.', 'The season is winter.'],
-    y_pred_levels = ['The season is spring.', 'The season is summer.', 'The season is fall.', 'The season is winter.'],
+    y_levels = list(set(['The season is spring.', 'The season is summer.', 'The season is fall.', 'The season is winter.'])-set([loo_text])),
+    y_pred_levels = list(set(['The season is spring.', 'The season is summer.', 'The season is fall.', 'The season is winter.'])-set([loo_text])),
     # txt2ts
     txt2ts_y_cols = ['season_str'],
     # open vocabulary

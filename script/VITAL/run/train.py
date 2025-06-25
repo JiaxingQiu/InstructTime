@@ -43,6 +43,7 @@ if overwrite:
         if i == 0:
             train_losses = train_losses[11:]
             test_losses = test_losses[11:]
+        try:
         # every num_epochs, evaluate the model
         model.eval()
         if config_dict['3d']:
