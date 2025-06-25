@@ -283,6 +283,8 @@ def prep_df2pred(
                     df2aug, meta, config_dict, configs, y_col, col_level_map
                 )
         else:
+            # add a 1e-6 random noise to w
+            w = w + 1e-6 * np.random.rand(1) 
             ts_hat_ls = interpolate_ts_tx(df2aug, model, config_dict, ["new_text"], w)
 
         tmp = pd.DataFrame(ts_hat_ls["new_text"], columns=["aug_text", "ts_hat"])
