@@ -15,9 +15,13 @@ for str_col in config_dict['txt2ts_y_cols']:
     df_left['text'] += ' ' + df_left[str_col]
 
 
+
 # left one out textual condition
 df_train = df_train[df_train['text'].str.strip() != loo_text.strip()]
 df_left = pd.concat([df_test, df_left], axis=0, ignore_index=True)
+
+df_train = df_train[df_train['city'] == "Beijing"]
+df_left = df_left[df_left['city'] == "Beijing"]
 
 print('\n\nfinal distribution of text prediction')
 print(df_train['text'].value_counts())
