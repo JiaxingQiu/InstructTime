@@ -1,4 +1,6 @@
 # --- model name as the saving path ----------------------------------------------------------
+if 'open_vocab' in locals():
+    if open_vocab: suffix = "_open" 
 model_name = ''.join([dataset_name, attr_suffix, suffix]) 
 # attr_suffix: '' for text-based, '_at' for attribute-based
 # suffix: special name for different model architectures

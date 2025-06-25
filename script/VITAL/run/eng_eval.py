@@ -54,16 +54,17 @@ if 'df_dists_ls' in locals():
 #---------------------------------- RaTS ----------------------------------
 # df_rats_margi = df_rats_ls[0]
 # df_rats_margi = df_rats_margi[df_rats_margi['aug_type'] == 'marginal']
-df_rats_condi = df_rats_ls[0]
-df_rats_condi = df_rats_condi[df_rats_condi['aug_type'] == 'conditional']
-# df_rats_all = pd.concat([df_rats_margi, df_rats_condi], ignore_index=True)
-df_rats_all = df_rats_condi
+if 'df_rats_ls' in locals():
+    df_rats_condi = df_rats_ls[0]
+    df_rats_condi = df_rats_condi[df_rats_condi['aug_type'] == 'conditional']
+    # df_rats_all = pd.concat([df_rats_margi, df_rats_condi], ignore_index=True)
+    df_rats_all = df_rats_condi
 
-df_rats_all.dropna(inplace=True)
-fig = plot_rats(df_rats_all, metrics = ['RaTS'], figsize=(12, 3))
-plt.show()
-# fig = plot_rats(df_rats_all, metrics = ['RaTS_preserved'], figsize=(12, 3))
-# plt.show()
+    df_rats_all.dropna(inplace=True)
+    fig = plot_rats(df_rats_all, metrics = ['RaTS'], figsize=(12, 3))
+    plt.show()
+    # fig = plot_rats(df_rats_all, metrics = ['RaTS_preserved'], figsize=(12, 3))
+    # plt.show()
 
 
 
