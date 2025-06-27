@@ -255,7 +255,7 @@ def get_features(df,
                     local_norm = config_dict['ts_local_normalize']).features
 
     # --- tx_f ---
-    if 'level_maps' in config_dict:
+    if 'level_maps' in config_dict.keys():
         tx_f = encode_attributes(df, config_dict['level_maps'])
     else:
         tx_f = TXTFeature(txt_ls, 
@@ -281,7 +281,7 @@ def get_features3d(df,
     tx_f_list = []
     for text_col in text_col_ls:
         _, txt_ls, _ = get_ts_txt_org(df, text_col = text_col, seq_length = config_dict['seq_length'])
-        if config_dict['attr_suffix'] == '_at':
+        if 'level_maps' in config_dict.keys():
             tx_f = encode_attributes(df, config_dict['level_maps'])
         else:
             tx_f = TXTFeature(txt_ls, 

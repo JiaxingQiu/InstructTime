@@ -18,7 +18,7 @@ elif dataset_name == "nicu":
 if attr_suffix == '':
     config_dict = update_config(config_dict, custom_target_cols = ['label'])
 if attr_suffix == '_at':
-    config_dict = update_config(config_dict, custom_target_cols = ['label'], attr_suffix = attr_suffix)
+    config_dict = update_config(config_dict, custom_target_cols = ['label'])
 if 'open_vocab' in locals():
     config_dict = update_config(config_dict, open_vocab = open_vocab)
 if 'alpha_init' in locals(): 
