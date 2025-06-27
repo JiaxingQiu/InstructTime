@@ -8,3 +8,4 @@ data/
 data_raw/
 !script/Data/
 script/VITAL/results/
+script/VITAL/test/

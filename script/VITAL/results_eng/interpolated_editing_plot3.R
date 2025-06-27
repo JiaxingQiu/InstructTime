@@ -25,7 +25,7 @@ df$dataset <- factor(
   levels = c("Synthetic w/ ground truth", "Synthetic", "Air Quality", "NICU Heart Rate")
 )
 colnames(df)[colnames(df) == "DTW distance decrease ↓"] <- "∆ DTW ↓"
-df$`|RaTS (preserved)|↓`[df$`RaTS ↑` < 0] <- 5
+df$`|RaTS (preserved)|↓`[df$`RaTS ↑` < 0] <- NA#5
 df$`RaTS ↑`[df$`RaTS ↑` < 0] <- 0
 
 # ─────────────────────────────────────────────
@@ -76,7 +76,7 @@ build_plot <- function(sub_df, metric_name = "RaTS ↑") {
     facet_wrap(~ dataset, nrow = 1, scales = "free_y") +
     # scale_x_continuous(breaks = sort(unique(sub_df$w))) +
     scale_x_continuous(breaks = c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0))+
-    scale_y_continuous(labels = scales::label_number(accuracy = 0.1, trim = FALSE)) +
+    # scale_y_continuous(labels = scales::label_number(accuracy = 0.1, trim = FALSE)) +
     scale_color_manual(values = col_map) +
     theme_minimal(base_size = 8) +
     theme(

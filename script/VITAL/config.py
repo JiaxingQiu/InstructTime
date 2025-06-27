@@ -37,6 +37,8 @@ config_dict = {
     'ts_subseq_max_length_ratio': 2/3,
     'ts_subseq_step_size_ratio': 1/30,
     'ts_augsub': False,
+    # text features
+    'attr_suffix': '',
     # target matrix settings
     'block_label': True, # only block or diagonal two types of clip targets
     'custom_target_cols': [], # 'label' is the same as the default "by_label" target

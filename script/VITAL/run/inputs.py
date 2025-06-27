@@ -1,3 +1,6 @@
+if config_dict['attr_suffix'] == '_at': 
+    config_dict = update_config(config_dict, level_maps = get_level_maps(df_train, config_dict["txt2ts_y_cols"]))
+
 # ---- prepare target matrix ----
 if len(config_dict['custom_target_cols']) > 0:
     target_train = gen_target(df_train, config_dict['custom_target_cols'])

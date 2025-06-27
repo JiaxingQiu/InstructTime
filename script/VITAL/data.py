@@ -254,8 +254,11 @@ def get_features(df,
                     local_norm = config_dict['ts_local_normalize']).features
 
     # --- tx_f ---
-    tx_f = TXTFeature(txt_ls, 
-                      encoder_model_name=config_dict['text_encoder_name']).features
+    if config_dict['attr_suffix'] == '_at':
+        tx_f = encode_attributes(df, config_dict['level_maps'])
+    else:
+        tx_f = TXTFeature(txt_ls, 
+                        encoder_model_name=config_dict['text_encoder_name']).features
 
     # --- labels ---
     labels = torch.tensor(labels)
@@ -277,8 +280,11 @@ def get_features3d(df,
     tx_f_list = []
     for text_col in text_col_ls:
         _, txt_ls, _ = get_ts_txt_org(df, text_col = text_col, seq_length = config_dict['seq_length'])
-        tx_f = TXTFeature(txt_ls, 
-                          encoder_model_name=config_dict['text_encoder_name']).features
+        if config_dict['attr_suffix'] == '_at':
+            tx_f = encode_attributes(df, config_dict['level_maps'])
+        else:
+            tx_f = TXTFeature(txt_ls, 
+                            encoder_model_name=config_dict['text_encoder_name']).features
         tx_f_list.append(tx_f)
     return ts_f, tx_f_list, labels
 
@@ -374,3 +380,50 @@ def gen_open_vocab_text(df_train, df_test, df_left, config_dict):
 #         print("  PASS: df_left is disjoint from df_train and df_test for this column.")
 #     else:
 #         print("  FAIL: Overlap found!")
+
+
+
+def get_level_maps(df, categorical_columns, sort_levels=True):
+    level_maps = {}
+    
+    for col in categorical_columns:
+        if col not in df.columns:
+            print(f"Warning: Column '{col}' not found in dataframe")
+            continue
+            
+        levels = df[col].dropna().unique()
+        if sort_levels:
+            levels = sorted(levels)
+        
+        level2idx = {lvl: i for i, lvl in enumerate(levels)}
+        level_maps[col] = level2idx
+        
+        print(f"Column '{col}': {len(levels)} unique levels")
+    
+    return level_maps
+
+def encode_attributes(df, level_maps):   
+    attrs_idx = []
+    
+    for col, level2idx in level_maps.items():
+        if col not in df.columns:
+            print(f"Warning: Column '{col}' not found in dataframe")
+            continue
+            
+        # Encode the column
+        attr_arr = (
+            df[col]
+            .map(level2idx)          # map strings → ints
+            .fillna(-1)              # unseen level or NaN
+            .astype(int)
+            .to_numpy()
+        )
+        attrs_idx.append(attr_arr)
+    
+    # Stack all attributes into a single array
+    if attrs_idx:
+        attrs_idx = np.stack(attrs_idx, axis=1)
+    else:
+        attrs_idx = np.array([]).reshape(len(df), 0)
+    
+    return  torch.tensor(attrs_idx, dtype=torch.float32)
