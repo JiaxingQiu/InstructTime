@@ -1,4 +1,4 @@
-if config_dict['attr_suffix'] == '_at': 
+if attr_suffix == '_at_level': 
     config_dict = update_config(config_dict, level_maps = get_level_maps(df_train, config_dict["txt2ts_y_cols"]))
 
 # ---- prepare target matrix ----

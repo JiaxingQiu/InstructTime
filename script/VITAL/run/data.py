@@ -17,7 +17,7 @@ elif dataset_name == "nicu":
     exec(open('run/configs/nicu.py', 'r').read())
 if attr_suffix == '':
     config_dict = update_config(config_dict, custom_target_cols = ['label'])
-if attr_suffix == '_at':
+if attr_suffix == '_at_level':
     config_dict = update_config(config_dict, custom_target_cols = ['label'])
 if 'open_vocab' in locals():
     config_dict = update_config(config_dict, open_vocab = open_vocab)
