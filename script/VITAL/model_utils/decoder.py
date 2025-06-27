@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from .helper import PositionalEncoding, SelfAttnBlock, DiffusionRefiner, CrossAttnBlock
-from .decoder_patch import *
+# from .decoder_patch import *
 
 # ------- custom ts decoder_layers -------
 class TransformerDecoder(nn.Module):

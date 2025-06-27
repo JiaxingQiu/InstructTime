@@ -25,6 +25,7 @@ df$dataset <- factor(
   levels = c("Synthetic w/ ground truth", "Synthetic", "Air Quality", "NICU Heart Rate")
 )
 colnames(df)[colnames(df) == "DTW distance decrease ↓"] <- "∆ DTW ↓"
+df$`|RaTS (preserved)|↓`[df$`RaTS ↑` < 0] <- 5
 df$`RaTS ↑`[df$`RaTS ↑` < 0] <- 0
 
 # ─────────────────────────────────────────────
@@ -35,7 +36,7 @@ build_plot <- function(sub_df, metric_name = "RaTS ↑") {
   line_models <- c("TEdit", "Time Weaver")
   
   col_map <- c(
-    "InstructTime"              = "#F6A97E" ,
+    "InstructTime"              = "#F6A97E",
     "InstructTime (open-vocab)" = "#D16A87",
     "TEdit"                     = "#1F77B4",
     "Time Weaver"               = "#17A689"
@@ -48,17 +49,19 @@ build_plot <- function(sub_df, metric_name = "RaTS ↑") {
       TRUE                   ~ w
     )
   )
+  
   strip_text_theme <- if (metric_name == "∆ DTW ↓") {
-    element_blank()
-  } else {
     element_text(face = "bold", size = 7)
+    
+  } else {
+    element_blank()
   }
   
   ggplot() +
     geom_line(
       data = sub_df %>% filter(Model %in% line_models),
       aes(w, .data[[metric_name]], colour = Model),
-      size = 0.5, linetype=2
+      size = 0.5, linetype = 2
     ) +
     geom_line(
       data = sub_df %>% filter(Model %in% dot_models),
@@ -70,23 +73,24 @@ build_plot <- function(sub_df, metric_name = "RaTS ↑") {
       aes(w_jit, .data[[metric_name]], colour = Model),
       size = 1.
     ) +
-    facet_wrap(~ dataset, nrow = 1, scales = "free_y") + # if metric is "∆ DTW ↓", no strip.text
-    scale_x_continuous(breaks = sort(unique(sub_df$w))) +
-    scale_y_continuous(labels = scales::label_number(accuracy = 0.1, trim = FALSE))+
+    facet_wrap(~ dataset, nrow = 1, scales = "free_y") +
+    # scale_x_continuous(breaks = sort(unique(sub_df$w))) +
+    scale_x_continuous(breaks = c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0))+
+    scale_y_continuous(labels = scales::label_number(accuracy = 0.1, trim = FALSE)) +
     scale_color_manual(values = col_map) +
     theme_minimal(base_size = 8) +
     theme(
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       panel.border = element_blank(),
-      axis.line = element_line(color = "black", size = 0.3),   # ← show x and y axis lines
-      panel.spacing      = unit(1, "lines"),
-      strip.text         = strip_text_theme,
+      axis.line = element_line(color = "black", size = 0.3),
+      panel.spacing = unit(1, "lines"),
+      strip.text = strip_text_theme,
       strip.background = element_blank(),
-      legend.title       = element_blank(),
+      legend.title = element_blank(),
       legend.text = element_text(size = 8),
-      legend.position    = "top",
-      axis.title.y       = element_text(margin = margin(r = 4), size = 8)  # , face = "bold"← smaller y-label
+      legend.position = "top",
+      axis.title.y = element_text(margin = margin(r = 4), size = 8)
     ) +
     labs(x = NULL, y = metric_name)
 }
@@ -95,29 +99,44 @@ build_plot <- function(sub_df, metric_name = "RaTS ↑") {
 # 4. create plots
 # ─────────────────────────────────────────────
 text_plot1 <- build_plot(df %>% filter(setting == "Text-based"),
-                         metric_name = "RaTS ↑")
+                         metric_name = "∆ DTW ↓")
 text_plot2 <- build_plot(df %>% filter(setting == "Text-based"),
-                         metric_name = "∆ DTW ↓")
-attr_plot1 <- build_plot(df %>% filter(setting == "Attribute-based"),
                          metric_name = "RaTS ↑")
-attr_plot2 <- build_plot(df %>% filter(setting == "Attribute-based"),
+text_plot3 <- build_plot(df %>% filter(setting == "Text-based"),
+                         metric_name = "|RaTS (preserved)|↓")
+
+attr_plot1 <- build_plot(df %>% filter(setting == "Attribute-based"),
                          metric_name = "∆ DTW ↓")
+attr_plot2 <- build_plot(df %>% filter(setting == "Attribute-based"),
+                         metric_name = "RaTS ↑")
+attr_plot3 <- build_plot(df %>% filter(setting == "Attribute-based"),
+                         metric_name = "|RaTS (preserved)|↓")
 
 # ─────────────────────────────────────────────
 # 5. assemble
 # ─────────────────────────────────────────────
-text_block <- annotate_figure( ggarrange( text_plot1, text_plot2,  ncol = 1, heights=c(1, 0.8),common.legend = TRUE, legend = "top"),
-                               left = text_grob("Text-based", face = "bold", size = 9, rot = 90),
-                               bottom = text_grob("Editing Strength", size = 8)) #, face = "bold"
+text_block <- annotate_figure(
+  ggarrange(text_plot1, text_plot2, text_plot3, ncol = 1,
+            heights = c(1, 1, 1),
+            common.legend = TRUE, legend = "top"),
+  left = text_grob("Text-based", face = "bold", size = 9, rot = 90),
+  bottom = text_grob("Editing Strength", size = 8)
+)
 
-attr_block <- annotate_figure( ggarrange( attr_plot1, attr_plot2,  ncol = 1, heights=c(1, 0.8), common.legend = TRUE, legend = "none"),
-                               left = text_grob("Attribute-based", face = "bold", size = 9, rot = 90),
-                               bottom = text_grob("Editing Strength", size = 8))
+attr_block <- annotate_figure(
+  ggarrange(attr_plot1, attr_plot2, attr_plot3, ncol = 1,
+            heights = c(1, 1, 1),
+            common.legend = TRUE, legend = "none"),
+  left = text_grob("Attribute-based", face = "bold", size = 9, rot = 90),
+  bottom = text_grob("Editing Strength", size = 8)
+)
+
 empty_space <- ggplot() + theme_void()
-combined <- ggarrange(text_block, empty_space, attr_block, 
-                      ncol = 1, 
-                      heights = c(1, 0.05, 0.85), common.legend = TRUE, legend = "top")
 
+combined <- ggarrange(text_block, empty_space, attr_block,
+                      ncol = 1,
+                      heights = c(1, 0.05, 0.85),
+                      common.legend = TRUE, legend = "top")
 
-ggsave("../results/paper/interpolated_editing.pdf", plot = combined, width = 9, height = 5.2, units = "in", device = cairo_pdf)
+ggsave("../results/paper/interpolated_editing3.pdf", plot = combined, width = 7, height = 6, units = "in", device = cairo_pdf)
 
