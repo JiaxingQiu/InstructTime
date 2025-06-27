@@ -403,7 +403,7 @@ def get_level_maps(df, categorical_columns, sort_levels=True):
     
     return level_maps
 
-def encode_attributes(df, level_maps, text_col, onehot=False):
+def encode_attributes(df, level_maps, text_col, onehot=True):
     """
     Encode categorical attributes with optional overrides from a free-text column.
 
