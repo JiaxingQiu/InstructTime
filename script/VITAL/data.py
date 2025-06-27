@@ -255,7 +255,7 @@ def get_features(df,
                     local_norm = config_dict['ts_local_normalize']).features
 
     # --- tx_f ---
-    if config_dict['attr_suffix'] == '_at':
+    if 'level_maps' in config_dict:
         tx_f = encode_attributes(df, config_dict['level_maps'])
     else:
         tx_f = TXTFeature(txt_ls, 
