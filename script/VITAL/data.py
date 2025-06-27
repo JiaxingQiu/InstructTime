@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import torch.nn.functional as F
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
@@ -402,28 +403,73 @@ def get_level_maps(df, categorical_columns, sort_levels=True):
     
     return level_maps
 
-def encode_attributes(df, level_maps):   
-    attrs_idx = []
+# def encode_attributes(df, level_maps, onehot = True):   
+#     attrs_idx = []
     
+#     for col, level2idx in level_maps.items():
+#         if col not in df.columns:
+#             print(f"Warning: Column '{col}' not found in dataframe")
+#             continue
+            
+#         # Encode the column
+#         attr_arr = (
+#             df[col]
+#             .map(level2idx)          # map strings → ints
+#             .fillna(-1)              # unseen level or NaN
+#             .astype(int)
+#             .to_numpy()
+#         )
+#         attrs_idx.append(attr_arr)
+    
+#     # Stack all attributes into a single array
+#     if attrs_idx:
+#         attrs_idx = np.stack(attrs_idx, axis=1)
+#     else:
+#         attrs_idx = np.array([]).reshape(len(df), 0)
+    
+#     return  torch.tensor(attrs_idx, dtype=torch.float32)
+
+def encode_attributes(df, level_maps, onehot=True):
+    """
+    Encode categorical columns.
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+    level_maps : dict[str, dict[str, int]]
+        column → {level → index}.
+    onehot : bool, default True
+        True  → concatenated one-hot vectors
+        False → raw integer indices (same shape as before).
+
+    Returns
+    -------
+    torch.Tensor
+        (N, ΣKi) when onehot=True, else (N, C); dtype float32.
+    """
+    int_cols   = []          # per-column integer indices
+    n_classes  = []          # Ki per column
+
     for col, level2idx in level_maps.items():
         if col not in df.columns:
-            print(f"Warning: Column '{col}' not found in dataframe")
+            print(f"Warning: column '{col}' not found")
             continue
-            
-        # Encode the column
-        attr_arr = (
-            df[col]
-            .map(level2idx)          # map strings → ints
-            .fillna(-1)              # unseen level or NaN
-            .astype(int)
-            .to_numpy()
-        )
-        attrs_idx.append(attr_arr)
-    
-    # Stack all attributes into a single array
-    if attrs_idx:
-        attrs_idx = np.stack(attrs_idx, axis=1)
-    else:
-        attrs_idx = np.array([]).reshape(len(df), 0)
-    
-    return  torch.tensor(attrs_idx, dtype=torch.float32)
+
+        arr = df[col].map(level2idx).astype(int).to_numpy()
+        int_cols.append(arr)
+        n_classes.append(len(level2idx))            # Ki
+
+    if not int_cols:                                # no valid columns
+        return torch.empty(len(df), 0, dtype=torch.float32)
+
+    idx_matrix = np.stack(int_cols, axis=1)         # (N, C)
+
+    if not onehot:                                  # raw indices
+        return torch.tensor(idx_matrix, dtype=torch.float32)
+
+    # --- one-hot per column, then concatenate ---------------------------------
+    onehot_parts = [
+        F.one_hot(torch.tensor(idx_matrix[:, i]), num_classes=Ki).float()
+        for i, Ki in enumerate(n_classes)
+    ]
+    return torch.cat(onehot_parts, dim=1)           # (N, ΣKi)
