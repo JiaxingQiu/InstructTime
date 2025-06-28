@@ -49,7 +49,10 @@ Run the following command for each dataset.
 Use optional flags to control modeling type:
 - `--open_vocab` for open-vocabulary editing
 - `--overwrite` to retrain the model
-- `--attr_suffix _at` to enable attribute-based editing
+- `--attr_suffix _at` to input condition as text + block target matrix
+- `--attr_suffix _at_level` to input condition as attributes
+- `--attr_suffix _at_level_lock` to input condition as attributes + block target matrix
+
 
 ```bash
 cd ./script/VITAL
@@ -67,10 +70,10 @@ python main.py --dataset_name syn --overwrite
 python main.py --dataset_name nicu --overwrite
 
 # train attribute-based version
-python main.py --dataset_name air --overwrite --attr_suffix _at
-python main.py --dataset_name syn_gt --overwrite --attr_suffix _at
-python main.py --dataset_name syn --overwrite --attr_suffix _at
-python main.py --dataset_name nicu --overwrite --attr_suffix _at _alpha_init 1e-2
+python main.py --dataset_name air --overwrite --attr_suffix _at_level
+python main.py --dataset_name syn_gt --overwrite --attr_suffix _at_level
+python main.py --dataset_name syn --overwrite --attr_suffix _at_level
+python main.py --dataset_name nicu --overwrite --attr_suffix _at_level
 
 ```
 

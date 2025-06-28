@@ -1,6 +1,6 @@
 import os
 os.chdir(vital_path)
-model_name = ''.join([dataset_name, '', vital_suffix])
+model_name = ''.join([dataset_name, attr_suffix, vital_suffix])
 
 if dataset_name == "syn_gt":
     exec(open(os.path.join(vital_path, 'run/settings.py')).read())
