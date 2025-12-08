@@ -1,0 +1,2 @@
+Point-wise MSE ↓,Point-wise MAE ↓,DTW distance decrease ↓,LCSS similarity increase ↑,RaTS ↑,|RaTS (preserved)|↓
+"3.58 [2.03, 5.53]","1.54 [1.12, 1.97]","-12.19 [-25.34, -3.39]","0.25 [0.02, 0.57]","6.65 [3.42, 14.91]","0.15 [0.00, 1.18]"
