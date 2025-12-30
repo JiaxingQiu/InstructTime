@@ -1,10 +1,11 @@
-# InstructTime (official repo is under construction)
+# InstructTime
 
 - [Overview](#overview)
 - [Contribution](#contribution)
 - [Installation](#installation)
 - [Use InstructTime](#use-instructtime)
 - [Experiments](#experiments)
+- [Citation](#citation)
 
 ## Overview
 
@@ -68,3 +69,23 @@ python main.py --dataset_name nicu --overwrite --attr_suffix _at_level
 ```
 
 Or run jupyter notebook: notebooks/main_instructtime.ipynb
+
+
+## Citation
+
+If you find this useful, please cite:
+
+>Jiaxing Qiu, Dongliang Guo, Brynne Sullivan, Teague R. Henry, and Thomas Hartvigsen. 2026. *Instruction-based Time Series Editing.* KDD ’26. https://doi.org/10.1145/3770854.3780299
+
+<details>
+<summary>BibTeX</summary>
+```bibtex
+@inproceedings{qiu2026instructtime,
+  title     = {Instruction-based Time Series Editing},
+  author    = {Qiu, Jiaxing and Guo, Dongliang and Sullivan, Brynne and Henry, Teague R. and Hartvigsen, Thomas},
+  booktitle = {Proceedings of the 32nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.1 (KDD '26)},
+  year      = {2026},
+  doi       = {10.1145/3770854.3780299},
+  url       = {https://doi.org/10.1145/3770854.3780299}
+}
+```
