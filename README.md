@@ -6,6 +6,7 @@
 - [Use InstructTime](#use-instructtime)
 - [Experiments](#experiments)
 - [Citation](#citation)
+- [License](#license)
 
 ## Overview
 
@@ -89,3 +90,8 @@ If you find this useful, please cite:
   url       = {https://doi.org/10.1145/3770854.3780299}
 }
 ```
+</details>
+
+## License
+
+This project is licensed under the MIT License. See `LICENSE`.
